@@ -30,12 +30,12 @@ exports.userGet = async(req, res) => {
     try {
         const user = await db.userGet(parseInt(req.params.userId));
         if (!user) {
-            return res.status(400).json({ success: false, message: 'User not found'});
+            return res.status(400).json({ ok: false, data: 'User not found'});
         }
-        return res.json({ success: true, message: user })
+        return res.json({ ok: true, data: user })
     } catch (err) {
         console.error("Error finding user: ", err.message);
-        return res.status(500).json({ success: false, message: err.message});
+        return res.status(500).json({ ok: false, data: err.message});
     }
 
 }
@@ -50,19 +50,19 @@ exports.userCreate = [
         const errorMessages = errors.array().map(e => e.msg);
 
         if (!errors.isEmpty()) {
-            return res.status(400).json({ success: false, message: errorMessages });
+            return res.status(400).json({ ok: false, data: errorMessages });
         }
 
         bcrypt.hash(password, 10, async(err, hashedPw) => {
             if (err) {
                 console.error('Hashing error: ', err.message);
-                return res.status(500).json({ success: false, 
-                                            message: "Error during encryption" });
+                return res.status(500).json({ ok: false, 
+                                            data: "Error during encryption" });
             }
             try {
                 const result = await db.userCreate({ username, email, password: hashedPw });
                 console.log('user created: ', result);
-                return res.json({ success: true, message: result });
+                return res.json({ ok: true, data: result });
             } catch (err) {
                 console.log(err)
                 let errMsg = 'Connection Error';
@@ -70,7 +70,7 @@ exports.userCreate = [
                     errMsg = `Username ${username} already exists`
                 }
                 console.error('user create error: ', err.message);
-                return res.status(500).json({ success: false, message: errMsg });
+                return res.status(500).json({ ok: false, data: errMsg });
             }
         });
     }
@@ -87,15 +87,15 @@ exports.userUpdate = [
         const errorMessages = errors.array().map(e => e.msg);
 
         if (!errors.isEmpty()) {
-            return res.status(400).json({ success: false, message: errorMessages });
+            return res.status(400).json({ ok: false, data: errorMessages });
         }
         try {
             const result = await db.userUpdate({ userId, username, email, about });
             console.log('user updated: ', result);
-            return res.json({ success: true, message: result });
+            return res.json({ ok: true, data: result });
         } catch (err) {
             console.error('user create error: ', err.message);
-            return res.status(500).json({ success: false, message: err.message });
+            return res.status(500).json({ ok: false, data: err.message });
         }
     }
 ];

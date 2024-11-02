@@ -4,7 +4,7 @@ const db = require('../db/userQueries');
 
 const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: 'dinkelberg'
+    secretOrKey: process.env.PASSPORT_SECRET
 };
 
 module.exports = new JwtStrategy(options, async (payload, done) => {

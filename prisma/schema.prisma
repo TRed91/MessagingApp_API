@@ -16,13 +16,13 @@ model user {
 
   sentMessages     message[] @relation("sent")
   receivedMessages message[] @relation("received")
-  groups           userGroup[]
+  groups           group[]
 }
 
 model message {
   messageId   Int @id @default(autoincrement())
   messageText String
-  timestamp   DateTime
+  timestamp   DateTime @default(now())
 
   authorId    Int
   author      user @relation("sent", fields: [authorId], references: [userId])
@@ -35,15 +35,5 @@ model group {
   groupId   Int @id @default(autoincrement())
   groupName String
 
-  users     userGroup[]
-}
-
-model userGroup {
-  userId      Int
-  user        user @relation(fields: [userId], references: [userId])
-
-  groupId     Int
-  group       group @relation(fields: [groupId], references: [groupId])
-
-  @@id([userId, groupId])
+  users     user[]
 }
