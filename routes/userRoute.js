@@ -5,6 +5,6 @@ const router = Router();
 
 router.get('/:userId', controller.userGet);
 router.post('/', controller.userCreate);
-router.put('/:userId', controller.userUpdate);
+router.put('/:userId', authentication, controller.userUpdate);
 
 module.exports = router;
