@@ -8,10 +8,11 @@ datasource db {
 }
 
 model user {
-  userId   BigInt @id @default(autoincrement()) 
+  userId   Int @id @default(autoincrement()) 
   userName String @unique
   email    String @unique
   password String
+  about    String?
 
   sentMessages     message[] @relation("sent")
   receivedMessages message[] @relation("received")
@@ -19,29 +20,29 @@ model user {
 }
 
 model message {
-  messageId   BigInt @id @default(autoincrement())
+  messageId   Int @id @default(autoincrement())
   messageText String
   timestamp   DateTime
 
-  authorId    BigInt
+  authorId    Int
   author      user @relation("sent", fields: [authorId], references: [userId])
 
-  receiverId  BigInt?
+  receiverId  Int?
   receiver    user? @relation("received", fields: [receiverId], references: [userId])
 }
 
 model group {
-  groupId   BigInt @id @default(autoincrement())
+  groupId   Int @id @default(autoincrement())
   groupName String
 
   users     userGroup[]
 }
 
 model userGroup {
-  userId      BigInt
+  userId      Int
   user        user @relation(fields: [userId], references: [userId])
 
-  groupId     BigInt
+  groupId     Int
   group       group @relation(fields: [groupId], references: [groupId])
 
   @@id([userId, groupId])

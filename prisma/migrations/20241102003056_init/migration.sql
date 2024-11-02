@@ -1,27 +1,28 @@
 -- CreateTable
 CREATE TABLE "user" (
-    "userId" BIGSERIAL NOT NULL,
+    "userId" SERIAL NOT NULL,
     "userName" TEXT NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "about" TEXT,
 
     CONSTRAINT "user_pkey" PRIMARY KEY ("userId")
 );
 
 -- CreateTable
 CREATE TABLE "message" (
-    "messageId" BIGSERIAL NOT NULL,
+    "messageId" SERIAL NOT NULL,
     "messageText" TEXT NOT NULL,
     "timestamp" TIMESTAMP(3) NOT NULL,
-    "authorId" BIGINT NOT NULL,
-    "receiverId" BIGINT,
+    "authorId" INTEGER NOT NULL,
+    "receiverId" INTEGER,
 
     CONSTRAINT "message_pkey" PRIMARY KEY ("messageId")
 );
 
 -- CreateTable
 CREATE TABLE "group" (
-    "groupId" BIGSERIAL NOT NULL,
+    "groupId" SERIAL NOT NULL,
     "groupName" TEXT NOT NULL,
 
     CONSTRAINT "group_pkey" PRIMARY KEY ("groupId")
@@ -29,8 +30,8 @@ CREATE TABLE "group" (
 
 -- CreateTable
 CREATE TABLE "userGroup" (
-    "userId" BIGINT NOT NULL,
-    "groupId" BIGINT NOT NULL,
+    "userId" INTEGER NOT NULL,
+    "groupId" INTEGER NOT NULL,
 
     CONSTRAINT "userGroup_pkey" PRIMARY KEY ("userId","groupId")
 );
