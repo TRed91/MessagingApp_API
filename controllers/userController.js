@@ -45,7 +45,6 @@ exports.userCreate = [
 
     (req, res) => {
         const { username, email, password } = req.body;
-
         const errors = validationResult(req);
         const errorMessages = errors.array().map(e => e.msg);
 
