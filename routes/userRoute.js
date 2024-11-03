@@ -1,6 +1,5 @@
 const { Router } = require('express');
 const controller = require('../controllers/userController');
-const msgController = require('../controllers/messageController');
 const authentication = require('../authentication/authentication');
 const router = Router();
 

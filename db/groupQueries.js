@@ -1,8 +1,8 @@
 const prisma = require('./client');
 
 exports.createGroup = async(groupName, userId) => {
-    return await prisma.group.create({
-        data: { 
+    return prisma.group.create({
+        data: {
             groupName: groupName,
             users: {
                 connect: {
@@ -14,18 +14,18 @@ exports.createGroup = async(groupName, userId) => {
 }
 
 exports.updateGroupName = async(groupId, groupName) => {
-    return await prisma.group.update({
-        where: { groupId: groupId },
-        data: { 
+    return prisma.group.update({
+        where: {groupId: groupId},
+        data: {
             groupName: groupName,
         },
     });
 }
 
 exports.addUser = async(groupId, userId) => {
-    return await prisma.group.update({
-        where: { groupId: groupId },
-        data: { 
+    return prisma.group.update({
+        where: {groupId: groupId},
+        data: {
             users: {
                 connect: {
                     userId: userId,
@@ -36,9 +36,9 @@ exports.addUser = async(groupId, userId) => {
 }
 
 exports.removeUser = async(groupId, userId) => {
-    return await prisma.group.update({
-        where: { groupId: groupId },
-        data: { 
+    return prisma.group.update({
+        where: {groupId: groupId},
+        data: {
             users: {
                 disconnect: {
                     userId: userId,
@@ -49,7 +49,7 @@ exports.removeUser = async(groupId, userId) => {
 }
 
 exports.deleteGroup = async(groupId) => {
-    return await prisma.group.delete({
-        where: { groupId: groupId },
+    return prisma.group.delete({
+        where: {groupId: groupId},
     });
 }

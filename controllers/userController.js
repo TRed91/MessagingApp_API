@@ -8,7 +8,7 @@ const validation = [
         .withMessage("Username is required"),
     body('email').trim()
         .isEmail()
-        .withMessage("Email sddress invalid"),
+        .withMessage("Email address invalid"),
     body('password').trim()
         .isLength({ min: 8 })
         .withMessage("Password must be at least 8 characters long"),
@@ -23,19 +23,19 @@ const validationUpdate = [
         .withMessage("Username is required"),
     body('email').trim()
         .isEmail()
-        .withMessage("Email sddress invalid"),
+        .withMessage("Email address invalid"),
 ]
 
 exports.userGet = async(req, res) => {
     try {
         const user = await db.userGet(parseInt(req.params.userId));
         if (!user) {
-            return res.status(400).json({ ok: false, data: 'User not found'});
+            return res.status(400).json({ ok: false, data: null, message: 'User not found'});
         }
         return res.json({ ok: true, data: user })
     } catch (err) {
         console.error("Error finding user: ", err.message);
-        return res.status(500).json({ ok: false, data: err.message});
+        return res.status(500).json({ ok: false, data: null, message: err.message});
     }
 
 }
@@ -50,14 +50,15 @@ exports.userCreate = [
         const errorMessages = errors.array().map(e => e.msg);
 
         if (!errors.isEmpty()) {
-            return res.status(400).json({ ok: false, data: errorMessages });
+            return res.status(400).json({ ok: false, data: null, message: errorMessages });
         }
 
         bcrypt.hash(password, 10, async(err, hashedPw) => {
             if (err) {
                 console.error('Hashing error: ', err.message);
                 return res.status(500).json({ ok: false, 
-                                            data: "Error during encryption" });
+                                            data: null,
+                                            message: "Error during encryption" });
             }
             try {
                 const result = await db.userCreate({ username, email, password: hashedPw });
@@ -70,7 +71,7 @@ exports.userCreate = [
                     errMsg = `Username ${username} already exists`
                 }
                 console.error('user create error: ', err.message);
-                return res.status(500).json({ ok: false, data: errMsg });
+                return res.status(500).json({ ok: false, data: null, message: errMsg });
             }
         });
     }
@@ -87,7 +88,7 @@ exports.userUpdate = [
         const errorMessages = errors.array().map(e => e.msg);
 
         if (!errors.isEmpty()) {
-            return res.status(400).json({ ok: false, data: errorMessages });
+            return res.status(400).json({ ok: false, data: null, messages: errorMessages });
         }
         try {
             const result = await db.userUpdate({ userId, username, email, about });
@@ -95,7 +96,7 @@ exports.userUpdate = [
             return res.json({ ok: true, data: result });
         } catch (err) {
             console.error('user create error: ', err.message);
-            return res.status(500).json({ ok: false, data: err.message });
+            return res.status(500).json({ ok: false, data: null, message: err.message });
         }
     }
 ];
