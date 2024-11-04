@@ -14,8 +14,8 @@ model user {
   password String
   about    String?
 
-  sentMessages     message[] @relation("sent")
-  receivedMessages message[] @relation("received")
+  sentMessages     message[] @relation(name: "sent")
+  receivedMessages message[] @relation(name: "received")
   groups           group[]
 }
 
@@ -25,10 +25,10 @@ model message {
   timestamp   DateTime @default(now())
 
   authorId    Int
-  author      user @relation("sent", fields: [authorId], references: [userId])
+  author      user @relation(name: "sent", fields: [authorId], references: [userId])
 
   receiverId  Int?
-  receiver    user? @relation("received", fields: [receiverId], references: [userId])
+  receiver    user? @relation(name: "received", fields: [receiverId], references: [userId])
 }
 
 model group {

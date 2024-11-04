@@ -7,7 +7,8 @@ exports.createMessage = async(req, res) => {
         if (!receiver) {
             return res.status(400).json({ ok: false, data: null, message: 'Receiver not found.' })
         }
-        const result = await messageDb.createMassage(req.params.userId, receiver.userId, req.body.message);
+        const authorId = parseInt(req.params.userId);
+        const result = await messageDb.createMassage(authorId, receiver.userId, req.body.message);
         return res.json({ ok: true, data: result });
     } catch (err) {
         console.error('Error creating message: ', err.message);
@@ -17,7 +18,8 @@ exports.createMessage = async(req, res) => {
 
 exports.getRecentMessages = async(req, res) => {
     try {
-        const messages = await messageDb.getRecentMessagesByUserId(req.params.userId);
+        const receiverId = parseInt(req.params.userId);
+        const messages = await messageDb.getRecentMessagesByUserId(receiverId);
         return res.json({ ok: true, data: messages });
     } catch (err) {
         console.error('Error getting recent messages: ', err.message);

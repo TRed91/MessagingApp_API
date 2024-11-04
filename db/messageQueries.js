@@ -1,38 +1,39 @@
 const prisma = require('./client');
 
-exports.createMassage = async(authorId, receiverId, text) => {
+exports.createMassage = (authorId, receiverId, text) => {
     return prisma.message.create({
         data: {
             authorId: authorId,
             receiverId: receiverId,
-            text: text
+            messageText: text
         },
     });
 }
 
-exports.getRecentMessagesByUserId = async(userId) => {
+exports.getRecentMessagesByUserId = (userId) => {
     return prisma.message.findMany({
         where: {receiverId: userId},
-        orderBy: {timestamp: true},
+        include: { author: true },
+        orderBy: {timestamp: 'desc'},
         take: 10,
     });
 }
 
-exports.getMessagesByAuthorAndReceiver = async(authorId, receiverId) => {
+exports.getMessagesByAuthorAndReceiver = (authorId, receiverId) => {
     return prisma.message.findMany({
         where: {
             authorId: authorId,
             receiverId: receiverId
         },
         orderBy: {
-            timestamp: true
+            timestamp: 'desc',
         },
     });
 }
 
-exports.getMessagesByGroup = async(groupId) => {
+exports.getMessagesByGroup = (groupId) => {
     return prisma.message.findMany({
         where: {groupId: groupId},
-        orderBy: {timestamp: true}
+        orderBy: {timestamp: 'desc'}
     });
 }

@@ -94,7 +94,7 @@ exports.userUpdate = [
             console.log('user updated: ', result);
             return res.json({ ok: true, data: result });
         } catch (err) {
-            console.error('user create error: ', err.message);
+            console.error('user update error: ', err.message);
             return res.status(500).json({ ok: false, data: null, message: err.message });
         }
     }

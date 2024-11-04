@@ -1,18 +1,18 @@
 const prisma = require('./client');
 
-exports.userGet = async(id) => {
+exports.userGet = (id) => {
     return prisma.user.findUnique({
         where: {userId: id}
     });
 }
 
-exports.userGetByName = async(username) => {
+exports.userGetByName = (username) => {
     return prisma.user.findUnique({
         where: {userName: username}
     });
 }
 
-exports.userCreate = async(data) => {
+exports.userCreate = (data) => {
     return prisma.user.create({
         data: {
             userName: data.username,
@@ -22,7 +22,7 @@ exports.userCreate = async(data) => {
     });
 }
 
-exports.userUpdate = async(data) => {
+exports.userUpdate = (data) => {
     return prisma.user.update({
         data: {
             userName: data.username,
