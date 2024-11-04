@@ -31,7 +31,10 @@ exports.getPrivateChats = async(req, res) => {
     try {
         const { authorId, receiverName } = req.params;
         const receiver = await userDb.userGetByName(receiverName);
-        const messages = await messageDb.getMessagesByAuthorAndReceiver(authorId, receiver.userId);
+        const messages = await messageDb.getMessagesByAuthorAndReceiver(
+                parseInt(authorId),
+                receiver.userId
+            );
         return res.json({ ok: true, data: messages });
     } catch (err) {
         console.error('Error getting private chats: ', err.message);

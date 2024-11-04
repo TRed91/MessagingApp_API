@@ -15,16 +15,19 @@ exports.getRecentMessagesByUserId = (userId) => {
         where: {receiverId: userId},
         include: { author: true },
         orderBy: {timestamp: 'desc'},
-        take: 10,
+        take: 4,
     });
 }
 
 exports.getMessagesByAuthorAndReceiver = (authorId, receiverId) => {
     return prisma.message.findMany({
         where: {
-            authorId: authorId,
-            receiverId: receiverId
+            OR: [
+                {authorId: authorId, receiverId: receiverId},
+                {authorId: receiverId, receiverId: authorId},
+            ],
         },
+        include: { author: true },
         orderBy: {
             timestamp: 'desc',
         },
